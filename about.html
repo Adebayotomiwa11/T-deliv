@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Us - T-deliv</title>
+  <meta name="description" content="Learn more about T-deliv, your trusted delivery partner providing fast and reliable shipping services." />
+  <meta name="keywords" content="T-deliv, delivery, logistics, fast shipping, reliable courier" />
+  <meta name="author" content="TOMIJAY" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: #f4f6f8;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-container a.logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .logo-container svg {
+      width: 36px;
+      height: 36px;
+      fill: #ffca28;
+      stroke: #1e88e5;
+      stroke-width: 3;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    nav a:hover,
+    nav a:focus-visible {
+      color: #cfd8dc;
+      outline: none;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+      width: 25px;
+      height: 20px;
+    }
+    .hamburger span {
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+    @media (max-width: 768px) {
+      nav {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        background-color: #1e88e5;
+        flex-direction: column;
+        width: 200px;
+        height: calc(100vh - 70px);
+        padding-top: 20px;
+        transition: right 0.3s ease;
+      }
+      nav.open {
+        right: 0;
+      }
+      nav a {
+        margin: 15px 0;
+        font-size: 1.2rem;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* Main content styling */
+    main {
+      flex: 1;
+      max-width: 900px;
+      margin: 50px auto 80px;
+      background: white;
+      padding: 40px 50px;
+      border-radius: 14px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    main h1 {
+      font-size: 2.8rem;
+      color: #1e88e5;
+      margin-bottom: 20px;
+      text-align: center;
+      letter-spacing: 1.2px;
+    }
+    main h2 {
+      color: #1565c0;
+      margin-top: 40px;
+      margin-bottom: 15px;
+      font-weight: 700;
+      border-bottom: 3px solid #ffca28;
+      display: inline-block;
+      padding-bottom: 5px;
+      letter-spacing: 0.5px;
+    }
+    main p {
+      font-size: 1.15rem;
+      line-height: 1.65;
+      margin-bottom: 20px;
+      color: #444;
+    }
+    main strong {
+      color: #1e88e5;
+    }
+    main img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin: 20px 0;
+      box-shadow: 0 6px 18px rgba(30, 136, 229, 0.3);
+      transition: transform 0.3s ease;
+    }
+    main img:hover,
+    main img:focus {
+      transform: scale(1.03);
+      outline: none;
+    }
+    /* Animated intro section */
+    section.animation-wrapper {
+      margin: 40px auto;
+      text-align: center;
+      max-width: 700px;
+    }
+    .animation-wrapper svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .video-caption {
+      font-size: 1rem;
+      color: #666;
+      margin-top: 15px;
+      font-style: italic;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #1565c0;
+      color: white;
+      padding: 20px 40px;
+      text-align: center;
+      font-size: 0.9rem;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+      user-select: none;
+    }
+    footer .contact-info {
+      max-width: 600px;
+      margin: 0 auto 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px;
+      font-weight: 600;
+    }
+    footer .contact-info div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    footer .contact-info i {
+      color: #ffca28;
+      font-size: 1.2rem;
+      min-width: 20px;
+      text-align: center;
+    }
+    footer a {
+      color: #ffca28;
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 10px;
+      transition: color 0.3s ease;
+    }
+    footer a:hover,
+    footer a:focus-visible {
+      color: #fff;
+      outline: none;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        margin: 30px 20px 80px;
+        padding: 25px 30px;
+      }
+      footer .contact-info {
+        flex-direction: column;
+        gap: 15px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <a href="index.html" class="logo" aria-label="T-deliv Home">
+      
+        <span>T-deliv</span>
+      </a>
+    </div>
+    <button
+      class="hamburger"
+      id="hamburger"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="primary-navigation"
+    >
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="primary-navigation">
+      <a href="index.html">Home</a>
+      <a href="pickup.html">Schedule Pickup</a>
+      <a href="track.html">Track Package</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>About T-deliv</h1>
+
+    <p>
+      At <strong>T-deliv</strong>, we understand that in today's fast-paced
+      world, reliable and timely delivery services are essential. We
+      specialize in providing top-notch courier and logistics solutions that
+      connect people and businesses across regions. Our commitment to speed,
+      accuracy, and exceptional customer service sets us apart in the
+      delivery industry.
+    </p>
+
+    <img
+      src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=80"
+      alt="Courier delivering package"
+      loading="lazy"
+      tabindex="0"
+    />
+
+    <h2>Our Mission</h2>
+    <p>
+      Our mission is to simplify your shipping experience by offering a
+      seamless, transparent, and efficient delivery process. Whether you're
+      sending a package locally or internationally, <strong>T-deliv</strong>
+      ensures your parcel arrives safely and on time.
+    </p>
+
+    <h2>Our Vision</h2>
+    <p>
+      To be the most trusted delivery partner recognized for innovation,
+      reliability, and customer satisfaction. We strive to leverage the latest
+      technologies and sustainable practices to reduce our environmental
+      footprint while maximizing efficiency.
+    </p>
+
+    <h2>Why Choose T-deliv?</h2>
+    <ul style="margin-left: 20px; margin-bottom: 20px;">
+      <li><strong>Fast & Reliable:</strong> Real-time tracking and timely deliveries.</li>
+      <li><strong>Customer-Centric:</strong> Dedicated support available 24/7.</li>
+      <li><strong>Technology-Driven:</strong> User-friendly platform and advanced logistics.</li>
+      <li><strong>Secure Handling:</strong> Your packages are handled with utmost care.</li>
+      <li><strong>Eco-Friendly:</strong> Initiatives to minimize environmental impact.</li>
+    </ul>
+
+    <h2>Our Services</h2>
+    <p>
+      We offer a broad range of delivery options tailored to your needs, including:
+    </p>
+    <ul style="margin-left: 20px; margin-bottom: 20px;">
+      <li>Same-day and next-day deliveries</li>
+      <li>International shipping</li>
+      <li>Package pickup scheduling</li>
+      <li>Bulk shipments for businesses</li>
+      <li>Custom packaging solutions</li>
+    </ul>
+
+    <img
+      src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80"
+      alt="Delivery truck on the road"
+      loading="lazy"
+      tabindex="0"
+    />
+
+   
+
+    <h2>Contact Us</h2>
+    <p>
+      Have questions or want to schedule a pickup? Reach out anytime—we’re
+      here to help and make your delivery experience smooth and hassle-free.
+    </p>
+  </main>
+
+  <footer>
+    <div class="contact-info" aria-label="Contact Information">
+      <div>
+        <i class="fas fa-phone"></i>
+        <a href="tel:+1234567890" aria-label="Phone number"> +234-707-959-1433</a>
+      </div>
+      <div>
+        <i class="fas fa-envelope"></i>
+        <a href="mailto:support@tdeliv.com" aria-label="Email address">support@tdeliv.com</a>
+      </div>
+      <div>
+        <i class="fas fa-map-marker-alt"></i>
+        Block 6B, Korea Bus-Stop Ishefun, Lagos, Nigeria.
+      </div>
+    </div>
+    <div>
+      &copy; 2025 T-deliv. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const nav = document.getElementById('primary-navigation');
+
+    hamburger.addEventListener('click', () => {
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+      hamburger.setAttribute('aria-expanded', !expanded);
+      nav.classList.toggle('open');
+    });
+
+    // Close nav on link click (mobile)
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (nav.classList.contains('open')) {
+          nav.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', false);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

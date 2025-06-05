@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Schedule Pickup - T-deliv</title>
+  <meta name="description" content="Schedule a package pickup with T-deliv. Fast, reliable nationwide delivery service." />
+  <meta name="keywords" content="schedule pickup, delivery pickup, package pickup, nationwide delivery" />
+  <meta name="author" content="TOMIJAY" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body { background: #f4f6f8; color: #333; min-height: 100vh; display: flex; flex-direction: column; }
+    header { background-color: #1e88e5; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+    .logo-container { display: flex; align-items: center; gap: 8px; }
+    .logo-container a.logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: white; font-weight: bold; font-size: 1.5rem; }
+    .logo-container svg { width: 36px; height: 36px; fill: #ffca28; stroke: #1e88e5; stroke-width: 3; }
+    nav { display: flex; align-items: center; }
+    nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: 600; transition: color 0.3s; }
+    nav a:hover { color: #cfd8dc; }
+    .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; width: 25px; height: 20px; }
+    .hamburger span { height: 3px; background: white; border-radius: 2px; transition: 0.3s; }
+    @media (max-width: 768px) {
+      nav { position: fixed; top: 70px; right: -100%; background-color: #1e88e5; flex-direction: column; width: 200px; height: calc(100vh - 70px); padding-top: 20px; transition: right 0.3s ease; }
+      nav.open { right: 0; }
+      nav a { margin: 15px 0; font-size: 1.2rem; }
+      .hamburger { display: flex; }
+    }
+    main { flex: 1; max-width: 600px; margin: 50px auto 80px; background: white; padding: 30px 40px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    h1 { font-size: 2.5rem; margin-bottom: 15px; color: #1e88e5; text-align: center; }
+    p.description { margin-bottom: 30px; font-size: 1.1rem; text-align: center; color: #555; }
+    form { display: flex; flex-direction: column; gap: 20px; }
+    label { font-weight: 600; margin-bottom: 6px; display: block; color: #1e88e5; }
+    input, textarea, select { padding: 12px 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; width: 100%; resize: vertical; transition: border-color 0.3s; }
+    input:focus, textarea:focus, select:focus { border-color: #1e88e5; outline: none; }
+    textarea { min-height: 100px; }
+    button[type="submit"] { background-color: #1e88e5; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: background-color 0.3s ease; }
+    button[type="submit"]:hover { background-color: #1565c0; }
+    #confirmationMessage { display: none; margin-top: 20px; color: green; font-weight: 700; text-align: center; font-size: 1.1rem; background: #e6f4ff; border: 1px solid #1e88e5; padding: 15px; border-radius: 8px; user-select: text; white-space: pre-line; }
+    #copyTrackingBtn {
+      display: none;
+      margin: 15px auto 0;
+      background: #1e88e5;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      font-size: 1rem;
+      display: block;
+    }
+    #copyTrackingBtn:hover {
+      background-color: #1565c0;
+    }
+    .error-message {
+      color: #d32f2f;
+      font-size: 0.9rem;
+      margin-top: 4px;
+      font-weight: 600;
+      display: none;
+      user-select: none;
+    }
+    #photoPreview {
+      display: none;
+      margin-top: 10px;
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    footer {
+      background-color: #1565c0;
+      color: white;
+      padding: 15px 40px;
+      text-align: center;
+      font-size: 0.9rem;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      user-select: none;
+    }
+    footer .contact-info {
+      max-width: 600px;
+      margin: 0 auto 12px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px;
+      font-weight: 600;
+    }
+    footer .contact-info div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    footer .contact-info i {
+      color: #ffca28;
+      font-size: 1.1rem;
+      min-width: 20px;
+      text-align: center;
+    }
+    footer .footer-about {
+      margin-bottom: 12px;
+    }
+    footer .footer-about a {
+      color: #ffca28;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 2px solid #ffca28;
+      border-radius: 6px;
+      display: inline-block;
+      transition: 
+        background-color 0.3s ease, 
+        color 0.3s ease, 
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+      user-select: none;
+    }
+    footer .footer-about a:hover,
+    footer .footer-about a:focus {
+      background-color: #ffca28;
+      color: #1565c0;
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(255, 202, 40, 0.5);
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="14" width="44" height="36" rx="4" ry="4" />
+          <path d="M20 18 L44 18 L44 24 L34 24 L34 46 L28 46 L28 24 L20 24 Z" fill="#1e88e5"/>
+          <line x1="48" y1="22" x2="58" y2="22" stroke="#1e88e5" stroke-width="2" stroke-linecap="round"/>
+          <line x1="48" y1="30" x2="58" y2="30" stroke="#1e88e5" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>T-deliv</span>
+      </a>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <nav id="primary-navigation">
+      <a href="index.html">Home</a>
+      <a href="pickup.html">Schedule Pickup</a>
+      <a href="track.html">Track Package</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Schedule a Pickup</h1>
+    <p class="description">Fill out the form below and we'll arrange to pick up your package at your preferred time.</p>
+
+    <form id="pickupForm" novalidate>
+      <label for="fullName">Full Name *</label>
+      <input type="text" id="fullName" required placeholder="Your full name" />
+      <div id="fullNameError" class="error-message">Please enter your full name.</div>
+
+      <label for="email">Email Address *</label>
+      <input type="email" id="email" required placeholder="example@email.com" />
+      <div id="emailError" class="error-message">Please enter a valid email address.</div>
+
+      <label for="phone">Phone Number *</label>
+      <input type="tel" id="phone" required placeholder="+234 800 000 0000" pattern="^\+?[0-9\s\-\(\)]{7,20}$" />
+      <div id="phoneError" class="error-message">Please enter a valid phone number.</div>
+
+      <label for="addressLine1">Address Line 1 *</label>
+      <input type="text" id="addressLine1" required placeholder="Street address, P.O. box, company name" />
+      <div id="addressLine1Error" class="error-message">Please enter your address.</div>
+
+      <label for="addressLine2">Address Line 2</label>
+      <input type="text" id="addressLine2" placeholder="Apartment, suite, unit, building, floor, etc." />
+
+      <label for="city">City *</label>
+      <input type="text" id="city" required placeholder="City" />
+      <div id="cityError" class="error-message">Please enter your city.</div>
+
+      <label for="state">State *</label>
+      <input type="text" id="state" required placeholder="State/Province" />
+      <div id="stateError" class="error-message">Please enter your state or province.</div>
+
+      <label for="packagePhoto">Upload Package Photo *</label>
+      <input type="file" id="packagePhoto" accept="image/*" />
+      <div id="photoError" class="error-message">Please upload a package photo.</div>
+      <img id="photoPreview" src="" alt="Preview" />
+
+      <label for="packageDetails">Package Description *</label>
+      <textarea id="packageDetails" required placeholder="Enter name of the product and full description so your delivery doesn’t get mixed up"></textarea>
+      <div id="packageDetailsError" class="error-message">Please enter package description.</div>
+
+      <label for="pickupDate">Preferred Pickup Date *</label>
+      <input type="date" id="pickupDate" required />
+      <div id="pickupDateError" class="error-message">Please select a pickup date.</div>
+
+      <label for="pickupTime">Preferred Time</label>
+      <input type="time" id="pickupTime" />
+
+      <button type="submit">Submit Pickup Request</button>
+    </form>
+
+    <div id="confirmationMessage" role="alert" aria-live="polite"></div>
+    <button id="copyTrackingBtn">Copy Tracking Number</button>
+  </main>
+  <footer>
+    <div class="contact-info">
+      <div><i class="fas fa-phone"></i> +234-707-959-1433</div>
+      <div><i class="fas fa-envelope"></i> support@t-deliv.com</div>
+      <div><i class="fas fa-map-marker-alt"></i> Block 6B, Korea Bus-Stop Ishefun, Lagos, Nigeria.</div>
+    </div>
+    <div class="footer-about">
+      <a href="about.html" aria-label="Learn more about T-deliv">About Us</a>
+    </div>
+    <div>&copy; 2025 T-deliv. All rights reserved.</div>
+  </footer>
+  
+
+  <script>
+    const hamburger = document.getElementById("hamburger");
+    const nav = document.getElementById("primary-navigation");
+    hamburger.addEventListener("click", () => {
+      nav.classList.toggle("open");
+    });
+
+    const packagePhotoInput = document.getElementById("packagePhoto");
+    const photoPreview = document.getElementById("photoPreview");
+    const photoError = document.getElementById("photoError");
+
+    packagePhotoInput.addEventListener("change", () => {
+      photoError.style.display = "none";
+      const file = packagePhotoInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          photoPreview.src = e.target.result;
+          photoPreview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      } else {
+        photoPreview.src = "";
+        photoPreview.style.display = "none";
+      }
+    });
+
+    const confirmation = document.getElementById("confirmationMessage");
+    const copyBtn = document.getElementById("copyTrackingBtn");
+    copyBtn.style.display = "none";
+
+    const form = document.getElementById("pickupForm");
+
+    function generateTrackingNumber() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let part = '';
+      for (let i = 0; i < 8; i++) {
+        part += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return `TDELIV-${part}`;
+    }
+
+    function validateEmail(email) {
+      // Basic email regex
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function validatePhone(phone) {
+      // Matches pattern from input pattern attribute
+      return /^\+?[0-9\s\-\(\)]{7,20}$/.test(phone);
+    }
+
+    function clearErrors() {
+      ['fullNameError', 'emailError', 'phoneError', 'addressLine1Error', 'cityError', 'stateError', 'photoError', 'packageDetailsError', 'pickupDateError']
+      .forEach(id => {
+        document.getElementById(id).style.display = 'none';
+      });
+    }
+
+    function submitPickupForm() {
+      clearErrors();
+
+      let valid = true;
+
+      const fullName = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const addressLine1 = document.getElementById("addressLine1").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const state = document.getElementById("state").value.trim();
+      const packageDetails = document.getElementById("packageDetails").value.trim();
+      const pickupDate = document.getElementById("pickupDate").value;
+      const photoFile = packagePhotoInput.files[0];
+
+      if (!fullName) {
+        document.getElementById("fullNameError").style.display = "block";
+        valid = false;
+      }
+      if (!email || !validateEmail(email)) {
+        document.getElementById("emailError").style.display = "block";
+        valid = false;
+      }
+      if (!phone || !validatePhone(phone)) {
+        document.getElementById("phoneError").style.display = "block";
+        valid = false;
+      }
+      if (!addressLine1) {
+        document.getElementById("addressLine1Error").style.display = "block";
+        valid = false;
+      }
+      if (!city) {
+        document.getElementById("cityError").style.display = "block";
+        valid = false;
+      }
+      if (!state) {
+        document.getElementById("stateError").style.display = "block";
+        valid = false;
+      }
+      if (!photoFile) {
+        photoError.style.display = "block";
+        valid = false;
+      }
+      if (!packageDetails) {
+        document.getElementById("packageDetailsError").style.display = "block";
+        valid = false;
+      }
+      if (!pickupDate) {
+        document.getElementById("pickupDateError").style.display = "block";
+        valid = false;
+      }
+
+      if (!valid) {
+        // Scroll to first error
+        const firstError = document.querySelector(".error-message[style*='block']");
+        if (firstError) firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const photoBase64 = e.target.result;
+
+        const trackingNumber = generateTrackingNumber();
+
+        const pickupData = {
+          fullName,
+          email,
+          phone,
+          addressLine1,
+          addressLine2: document.getElementById("addressLine2").value.trim(),
+          city,
+          state,
+          description: packageDetails,
+          pickupDate,
+          photo: photoBase64
+        };
+
+        localStorage.setItem(trackingNumber, JSON.stringify(pickupData));
+
+        form.reset();
+        photoPreview.style.display = "none";
+
+        confirmation.textContent = `Your pickup has been scheduled!\n\nYour tracking number is: ${trackingNumber}\n\nPlease keep it safe to track your package.`;
+        confirmation.style.display = "block";
+        confirmation.scrollIntoView({ behavior: "smooth" });
+
+        copyBtn.style.display = "block";
+        copyBtn.textContent = "Copy Tracking Number";
+
+        copyBtn.onclick = () => {
+          navigator.clipboard.writeText(trackingNumber).then(() => {
+            copyBtn.textContent = "Copied!";
+            setTimeout(() => {
+              copyBtn.textContent = "Copy Tracking Number";
+            }, 2000);
+          }).catch(() => {
+            confirmation.textContent = "Failed to copy tracking number. Please copy manually:\n" + trackingNumber;
+          });
+        };
+      };
+      reader.readAsDataURL(photoFile);
+    }
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      submitPickupForm();
+    });
+
+    // Min date for pickup date input
+    document.addEventListener("DOMContentLoaded", () => {
+      const pickupDateInput = document.getElementById('pickupDate');
+      pickupDateInput.min = new Date().toISOString().split("T")[0];
+      copyBtn.style.display = "none";
+    });
+  </script>
+</body>
+</html>

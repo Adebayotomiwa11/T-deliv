@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Report an Issue - T-deliv</title>
+  <meta name="description" content="Report any delivery issues with T-deliv. Quick and easy issue submission form." />
+  <meta name="keywords" content="report issue, delivery problem, customer support, T-deliv" />
+  <meta name="author" content="TOMIJAY" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body { background: #f4f6f8; color: #333; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Header */
+    header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-container a.logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .logo-container svg {
+      width: 36px;
+      height: 36px;
+      fill: #ffca28;
+      stroke: #1e88e5;
+      stroke-width: 3;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #cfd8dc;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+      width: 25px;
+      height: 20px;
+    }
+    .hamburger span {
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+    @media (max-width: 768px) {
+      nav {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        background-color: #1e88e5;
+        flex-direction: column;
+        width: 200px;
+        height: calc(100vh - 70px);
+        padding-top: 20px;
+        transition: right 0.3s ease;
+      }
+      nav.open {
+        right: 0;
+      }
+      nav a {
+        margin: 15px 0;
+        font-size: 1.2rem;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* Main form container */
+    main {
+      flex: 1;
+      max-width: 600px;
+      margin: 50px auto 80px;
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #1e88e5;
+      text-align: center;
+    }
+    p.description {
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #555;
+    }
+
+    /* Form styling */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    label {
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+      color: #1e88e5;
+      transition: color 0.3s ease;
+    }
+    input, textarea, select {
+      padding: 12px 15px;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      width: 100%;
+      resize: vertical;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+      background-color: #fafafa;
+      color: #222;
+    }
+    input::placeholder, textarea::placeholder {
+      color: #999;
+      font-style: italic;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #1e88e5;
+      outline: none;
+      box-shadow: 0 0 12px rgba(30, 136, 229, 0.6);
+      background-color: #fff;
+      transform: scale(1.03);
+    }
+    textarea {
+      min-height: 120px;
+      font-family: inherit;
+    }
+    button[type="submit"] {
+      background-color: #1e88e5;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      align-self: center;
+      width: 60%;
+      box-shadow: 0 4px 8px rgba(30, 136, 229, 0.3);
+    }
+    button[type="submit"]:hover {
+      background-color: #1565c0;
+      box-shadow: 0 6px 12px rgba(21, 101, 192, 0.5);
+      transform: scale(1.05);
+    }
+    button[type="submit"]:active {
+      transform: scale(0.98);
+    }
+
+    /* Confirmation message */
+    #confirmationMessage {
+      display: none;
+      margin-top: 20px;
+      color: green;
+      font-weight: 700;
+      text-align: center;
+      font-size: 1.1rem;
+      background: #e6f4ff;
+      border: 1px solid #1e88e5;
+      padding: 15px;
+      border-radius: 8px;
+      user-select: text;
+      white-space: pre-line;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer */
+    footer {
+      background-color: #1565c0;
+      color: white;
+      padding: 15px 40px;
+      text-align: center;
+      font-size: 0.9rem;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      user-select: none;
+    }
+    footer .contact-info {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px;
+      font-weight: 600;
+    }
+    footer .contact-info div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    footer .contact-info i {
+      color: #ffca28;
+      font-size: 1.1rem;
+      min-width: 20px;
+      text-align: center;
+    }
+    footer {
+      background-color: #1565c0;
+      color: white;
+      padding: 15px 40px;
+      text-align: center;
+      font-size: 0.9rem;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      user-select: none;
+    }
+    footer .contact-info {
+      max-width: 600px;
+      margin: 0 auto 12px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px;
+      font-weight: 600;
+    }
+    footer .contact-info div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    footer .contact-info i {
+      color: #ffca28;
+      font-size: 1.1rem;
+      min-width: 20px;
+      text-align: center;
+    }
+    footer .footer-about {
+      margin-bottom: 12px;
+    }
+    footer .footer-about a {
+      color: #ffca28;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 2px solid #ffca28;
+      border-radius: 6px;
+      display: inline-block;
+      transition: 
+        background-color 0.3s ease, 
+        color 0.3s ease, 
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+      user-select: none;
+    }
+    footer .footer-about a:hover,
+    footer .footer-about a:focus {
+      background-color: #ffca28;
+      color: #1565c0;
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(255, 202, 40, 0.5);
+      outline: none;
+    }
+    @media (max-width: 480px) {
+      footer .contact-info {
+        flex-direction: column;
+        gap: 12px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <a href="index.html" class="logo" aria-label="T-deliv Home">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <rect x="10" y="14" width="44" height="36" rx="4" ry="4" />
+          <path d="M20 18 L44 18 L44 24 L34 24 L34 46 L28 46 L28 24 L20 24 Z" fill="#1e88e5"/>
+          <line x1="48" y1="22" x2="58" y2="22" stroke="#1e88e5" stroke-width="2" stroke-linecap="round"/>
+          <line x1="48" y1="30" x2="58" y2="30" stroke="#1e88e5" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>T-deliv</span>
+      </a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primary-navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="primary-navigation">
+      <a href="index.html">Home</a>
+      <a href="pickup.html">Schedule Pickup</a>
+      <a href="track.html">Track Package</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Report an Issue</h1>
+    <p class="description">Let us know if you experience any issues with your delivery. We’re here to help!</p>
+
+    <form id="issueForm" onsubmit="event.preventDefault(); submitIssueForm();">
+      <label for="trackingNumber">Tracking Number *</label>
+      <input
+        type="text"
+        id="trackingNumber"
+        required
+        placeholder="Enter your tracking number"
+        pattern="TDELIV-[A-Z0-9]{8}"
+        title="Format: TDELIV-XXXXXXXX (8 alphanumeric characters)"
+        autocomplete="off"
+      />
+
+      <label for="email">Email Address *</label>
+      <input
+        type="email"
+        id="email"
+        required
+        placeholder="example@email.com"
+        autocomplete="email"
+      />
+
+      <label for="issueDescription">Issue Description *</label>
+      <textarea
+        id="issueDescription"
+        required
+        placeholder="Describe the issue in detail"
+        spellcheck="true"
+      ></textarea>
+
+      <button type="submit">Submit Issue Report</button>
+    </form>
+
+    <div id="confirmationMessage" role="alert" aria-live="polite"></div>
+  </main>
+
+  <footer>
+    <div class="contact-info">
+      <div><i class="fas fa-phone"></i> +234-707-959-1433</div>
+      <div><i class="fas fa-envelope"></i> support@t-deliv.com</div>
+      <div><i class="fas fa-map-marker-alt"></i> Block 6B, Korea Bus-Stop Ishefun, Lagos, Nigeria.</div>
+    </div>
+    <div class="footer-about">
+      <a href="about.html" aria-label="Learn more about T-deliv">About Us</a>
+    </div>
+    <div>&copy; 2025 T-deliv. All rights reserved.</div>
+  </footer>
+
+
+  <script>
+    const hamburger = document.getElementById("hamburger");
+    const nav = document.getElementById("primary-navigation");
+
+    hamburger.addEventListener("click", () => {
+      const expanded = hamburger.getAttribute("aria-expanded") === "true";
+      hamburger.setAttribute("aria-expanded", String(!expanded));
+      nav.classList.toggle("open");
+    });
+
+    // Validation helper for tracking number format
+    function isValidTrackingNumber(num) {
+      const regex = /^TDELIV-[A-Z0-9]{8}$/;
+      return regex.test(num.trim().toUpperCase());
+    }
+
+    function submitIssueForm() {
+      const trackingNumberInput = document.getElementById("trackingNumber");
+      const emailInput = document.getElementById("email");
+      const issueDescriptionInput = document.getElementById("issueDescription");
+      const confirmation = document.getElementById("confirmationMessage");
+
+      // Trim and uppercase tracking number for consistency
+      const trackingNumber = trackingNumberInput.value.trim().toUpperCase();
+      const email = emailInput.value.trim();
+      const issueDescription = issueDescriptionInput.value.trim();
+
+      // Reset confirmation message
+      confirmation.style.display = "none";
+      confirmation.textContent = "";
+
+      // Validation
+      if (!isValidTrackingNumber(trackingNumber)) {
+        confirmation.style.color = "red";
+        confirmation.textContent = "Please enter a valid tracking number in format TDELIV-XXXXXXXX.";
+        confirmation.style.display = "block";
+        trackingNumberInput.focus();
+        return;
+      }
+      if (!email || !issueDescription) {
+        confirmation.style.color = "red";
+        confirmation.textContent = "Please fill out all required fields.";
+        confirmation.style.display = "block";
+        return;
+      }
+
+      // Save issue data (for demo, localStorage)
+      const issues = JSON.parse(localStorage.getItem("issues") || "[]");
+      issues.push({ trackingNumber, email, issueDescription, date: new Date().toISOString() });
+      localStorage.setItem("issues", JSON.stringify(issues));
+
+      // Reset form
+      document.getElementById("issueForm").reset();
+
+      // Show confirmation message
+      confirmation.style.color = "green";
+      confirmation.textContent = `Thank you! Your issue has been reported.\n\nWe will contact you shortly at ${email}.`;
+      confirmation.style.display = "block";
+      confirmation.scrollIntoView({ behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
