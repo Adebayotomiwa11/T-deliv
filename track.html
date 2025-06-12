@@ -9,7 +9,7 @@
   <meta name="author" content="TOMIJAY" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
+   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
     body { background: #f4f6f8; color: #333; min-height: 100vh; display: flex; flex-direction: column; }
 
@@ -386,12 +386,37 @@
       box-shadow: 0 4px 10px rgba(255, 202, 40, 0.5);
       outline: none;
     }
+    .payment{
+      margin-bottom: 12px;
+    }
+    .payment a {
+      color: #6528ff;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 2px solid #4528ff;
+      border-radius: 6px;
+      display: inline-block;
+      transition: 
+        background-color 0.3s ease, 
+        color 0.3s ease, 
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .payment a:hover,
+    .payment a:focus {
+      background-color: #3e28ff;
+      color: #ebedf0;
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(255, 202, 40, 0.5);
+      outline: none;
+    }
   </style>
 </head>
 <body>
-
-<header>
-  <div class="logo-container">
+<header> <div class="logo-container">
     <a href="index.html" class="logo">
       <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="T-deliv Logo" role="img">
         <rect x="10" y="14" width="44" height="36" rx="4" ry="4" />
@@ -408,9 +433,7 @@
     <a href="pickup.html">Schedule Pickup</a>
     <a href="track.html">Track Package</a>
     <a href="contact.html">Contact</a>
-  </nav>
-</header>
-
+  </nav></header>
 <main>
   <h1>Track Your Package</h1>
   <form onsubmit="event.preventDefault(); trackPackage();" aria-label="Tracking form">
@@ -419,13 +442,10 @@
     <small id="trackingHelp" style="color:#555; margin-bottom:10px;">Format: TDELIV- followed by 7 characters</small>
     <button type="submit">Track</button>
   </form>
-
   <div id="trackingResult" class="result" style="display: none;" aria-live="polite"></div>
   <div id="notFound" class="not-found" style="display: none;">Tracking number not found.</div>
 </main>
-
-  <footer>
-    <div class="contact-info">
+<footer> <div class="contact-info">
       <div><i class="fas fa-phone"></i> +234-707-959-1433</div>
       <div><i class="fas fa-envelope"></i> support@t-deliv.com</div>
       <div><i class="fas fa-map-marker-alt"></i> Block 6B, Korea Bus-Stop Ishefun, Lagos, Nigeria.</div>
@@ -433,9 +453,7 @@
     <div class="footer-about">
       <a href="about.html" aria-label="Learn more about T-deliv">About Us</a>
     </div>
-    <div>&copy; 2025 T-deliv. All rights reserved.</div>
-  </footer>
-
+    <div>&copy; 2025 T-deliv. All rights reserved.</div></footer>
 <script>
   const hamburger = document.getElementById("hamburger");
   const nav = document.getElementById("primary-navigation");
@@ -463,8 +481,6 @@
     }
 
     const { description, pickupDate, photo } = JSON.parse(storedData);
-
-    // Dates
     const pickup = new Date(pickupDate);
     const delivery = new Date(pickup);
     delivery.setDate(pickup.getDate() + 3);
@@ -474,14 +490,14 @@
     const status = isDelivered ? "Delivered" : "Processing";
     const statusClass = isDelivered ? "delivered" : "processing";
 
-    // Progress bar percent from pickup to delivery date, clamp 0-100%
+    // Calculate progress percent based on dates
     let progressPercent = 0;
-    if (today > pickup) {
-      progressPercent = Math.min(100, ((today - pickup) / (delivery - pickup)) * 100);
+    if (today >= pickup && today <= delivery) {
+      progressPercent = ((today - pickup) / (delivery - pickup)) * 100;
+    } else if (today > delivery) {
+      progressPercent = 100;
     }
 
-    // Timeline steps: Pickup (start), Processing (mid), Delivered (end)
-    // Mark active steps depending on status
     const timelineHTML = `
       <div class="timeline-labels">
         <span>Pickup</span>
@@ -489,63 +505,62 @@
         <span>Delivered</span>
       </div>
       <div class="timeline" aria-label="Delivery progress timeline" role="list">
-        <div class="timeline-step ${'active'}" role="listitem" aria-current="step" title="Pickup">&#10003;</div>
-        <div class="timeline-step ${progressPercent >= 33 ? 'active' : ''}" role="listitem" title="Processing">&#8987;</div>
-        <div class="timeline-step ${isDelivered ? 'active' : ''}" role="listitem" title="Delivered">&#127873;</div>
+        <div class="timeline-step active" role="listitem" aria-current="step" title="Pickup">✔</div>
+        <div class="timeline-step ${progressPercent >= 33 ? 'active' : ''}" role="listitem" title="Processing">⏳</div>
+        <div class="timeline-step ${isDelivered ? 'active' : ''}" role="listitem" title="Delivered">🎁</div>
       </div>
     `;
 
-    // Map + marker animation simulation
     const mapHTML = `
       <div id="map" aria-label="Delivery route map" role="img">
         <div id="marker" aria-hidden="true"></div>
       </div>
     `;
 
-    // Copy button with feedback
     const copyBtnHTML = `
-      <button class="copy-btn" id="copyBtn" aria-label="Copy tracking number to clipboard">Copy Tracking Number</button>
+      <button class="copy-btn" id="copyBtn" aria-label="Copy tracking number to clipboard">Copy</button>
     `;
 
     resultDiv.innerHTML = `
-      <h2>Tracking Information</h2>
+      <h2>Status: <span class="status-badge ${statusClass}">${status}</span></h2>
       <p><strong>Tracking Number:</strong> ${trackingNumber} ${copyBtnHTML}</p>
+      <p  style="background: white; color: red; border-radius: 50px;"><strong>warning:keep tracking number safe to avoid issues</strong></p>
       <p><strong>Description:</strong> ${description}</p>
       <p><strong>Pickup Date:</strong> ${pickup.toDateString()}</p>
-      <p><strong>Expected Delivery Date:</strong> ${delivery.toDateString()}</p>
-      <p><strong>Status:</strong> <span class="status-badge ${statusClass}">${status}</span></p>
-      <div class="progress-bar" aria-label="Delivery progress bar">
-        <div class="progress-bar-inner" style="width: ${progressPercent}%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progressPercent)}"></div>
-      </div>
+      <p><strong>Estimated Delivery:</strong> ${delivery.toDateString()}</p>
+      <p style="color: green;"><strong>To locate your Package locate the nearest T-deliv branch</strong></p>
+      <p>If interested in Home-Delivery <small>click the button below👇👇👇</small></p>
+      <div class="payment">
+      <a href="payment.html" aria-label="">Home Delivery</a>
+    </div>
       ${timelineHTML}
-      ${photo ? `<img src="${photo}" alt="Package photo" />` : ''}
+      <div class="progress-bar"><div class="progress-bar-inner" style="width: ${progressPercent}%"></div></div>
       ${mapHTML}
     `;
 
     resultDiv.style.display = "block";
-    resultDiv.scrollIntoView({ behavior: "smooth" });
 
-    // Animate map marker position based on progressPercent
+    // Animate marker position on map
     const marker = document.getElementById("marker");
     if (marker) {
-      // Map width assumed 80% (from left=10% to 90%)
-      const leftPos = 10 + (progressPercent * 0.8); // percent in viewport
-      marker.style.left = `${leftPos}%`;
+      marker.style.left = isDelivered ? "80%" : progressPercent + "%";
     }
 
-    // Setup copy button functionality
+    // Clipboard copy logic
     const copyBtn = document.getElementById("copyBtn");
-    copyBtn.onclick = () => {
+    copyBtn.addEventListener("click", () => {
       navigator.clipboard.writeText(trackingNumber).then(() => {
         copyBtn.textContent = "Copied!";
-        setTimeout(() => { copyBtn.textContent = "Copy Tracking Number"; }, 2000);
-      }).catch(() => {
-        alert("Failed to copy. Please copy manually.");
+        setTimeout(() => (copyBtn.textContent = "Copy"), 1500);
       });
-    };
+    });
+
+    // Clear and focus input for convenience
+    trackingNumberInput.value = "";
+    trackingNumberInput.focus();
   }
 </script>
 
+
 </body>
 </html>
-

@@ -330,11 +330,12 @@
     <h1>Report an Issue</h1>
     <p class="description">Let us know if you experience any issues with your delivery. We’re here to help!</p>
 
-    <form id="issueForm" onsubmit="event.preventDefault(); submitIssueForm();">
+    <form id="issueForm" action="https://formspree.io/f/xyzjwwpn" method="POST">
       <label for="trackingNumber">Tracking Number *</label>
       <input
         type="text"
         id="trackingNumber"
+        name="trackingNumber"
         required
         placeholder="Enter your tracking number"
         pattern="TDELIV-[A-Z0-9]{8}"
@@ -346,6 +347,7 @@
       <input
         type="email"
         id="email"
+        name="email"
         required
         placeholder="example@email.com"
         autocomplete="email"
@@ -354,6 +356,7 @@
       <label for="issueDescription">Issue Description *</label>
       <textarea
         id="issueDescription"
+        name="issueDescription"
         required
         placeholder="Describe the issue in detail"
         spellcheck="true"
@@ -379,65 +382,79 @@
 
 
   <script>
-    const hamburger = document.getElementById("hamburger");
-    const nav = document.getElementById("primary-navigation");
+  const hamburger = document.getElementById("hamburger");
+  const nav = document.getElementById("primary-navigation");
 
-    hamburger.addEventListener("click", () => {
-      const expanded = hamburger.getAttribute("aria-expanded") === "true";
-      hamburger.setAttribute("aria-expanded", String(!expanded));
-      nav.classList.toggle("open");
-    });
+  hamburger.addEventListener("click", () => {
+    const expanded = hamburger.getAttribute("aria-expanded") === "true";
+    hamburger.setAttribute("aria-expanded", String(!expanded));
+    nav.classList.toggle("open");
+  });
 
-    // Validation helper for tracking number format
-    function isValidTrackingNumber(num) {
-      const regex = /^TDELIV-[A-Z0-9]{8}$/;
-      return regex.test(num.trim().toUpperCase());
+  // Form submission via AJAX
+  document.getElementById("issueForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const trackingNumberInput = document.getElementById("trackingNumber");
+    const emailInput = document.getElementById("email");
+    const issueDescriptionInput = document.getElementById("issueDescription");
+    const confirmation = document.getElementById("confirmationMessage");
+
+    const trackingNumber = trackingNumberInput.value.trim().toUpperCase();
+    const email = emailInput.value.trim();
+    const issueDescription = issueDescriptionInput.value.trim();
+
+    // Reset confirmation message
+    confirmation.style.display = "none";
+    confirmation.textContent = "";
+
+    // Validation
+    const isValidTrackingNumber = /^TDELIV-[A-Z0-9]{8}$/.test(trackingNumber);
+    if (!isValidTrackingNumber) {
+      confirmation.style.color = "red";
+      confirmation.textContent = "Please enter a valid tracking number in format TDELIV-XXXXXXXX.";
+      confirmation.style.display = "block";
+      trackingNumberInput.focus();
+      return;
+    }
+    if (!email || !issueDescription) {
+      confirmation.style.color = "red";
+      confirmation.textContent = "Please fill out all required fields.";
+      confirmation.style.display = "block";
+      return;
     }
 
-    function submitIssueForm() {
-      const trackingNumberInput = document.getElementById("trackingNumber");
-      const emailInput = document.getElementById("email");
-      const issueDescriptionInput = document.getElementById("issueDescription");
-      const confirmation = document.getElementById("confirmationMessage");
-
-      // Trim and uppercase tracking number for consistency
-      const trackingNumber = trackingNumberInput.value.trim().toUpperCase();
-      const email = emailInput.value.trim();
-      const issueDescription = issueDescriptionInput.value.trim();
-
-      // Reset confirmation message
-      confirmation.style.display = "none";
-      confirmation.textContent = "";
-
-      // Validation
-      if (!isValidTrackingNumber(trackingNumber)) {
+    // Send to Formspree
+    fetch("https://formspree.io/f/xyzjwwpn", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        trackingNumber,
+        email,
+        issueDescription
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        document.getElementById("issueForm").reset();
+        confirmation.style.color = "green";
+        confirmation.textContent = `Thank you! Your issue has been reported.\n\nWe will contact you shortly at ${email}.`;
+      } else {
         confirmation.style.color = "red";
-        confirmation.textContent = "Please enter a valid tracking number in format TDELIV-XXXXXXXX.";
-        confirmation.style.display = "block";
-        trackingNumberInput.focus();
-        return;
+        confirmation.textContent = "There was an error submitting your report. Please try again later.";
       }
-      if (!email || !issueDescription) {
-        confirmation.style.color = "red";
-        confirmation.textContent = "Please fill out all required fields.";
-        confirmation.style.display = "block";
-        return;
-      }
-
-      // Save issue data (for demo, localStorage)
-      const issues = JSON.parse(localStorage.getItem("issues") || "[]");
-      issues.push({ trackingNumber, email, issueDescription, date: new Date().toISOString() });
-      localStorage.setItem("issues", JSON.stringify(issues));
-
-      // Reset form
-      document.getElementById("issueForm").reset();
-
-      // Show confirmation message
-      confirmation.style.color = "green";
-      confirmation.textContent = `Thank you! Your issue has been reported.\n\nWe will contact you shortly at ${email}.`;
       confirmation.style.display = "block";
       confirmation.scrollIntoView({ behavior: "smooth" });
-    }
-  </script>
+    })
+    .catch(() => {
+      confirmation.style.color = "red";
+      confirmation.textContent = "Network error. Please check your internet connection.";
+      confirmation.style.display = "block";
+    });
+  });
+</script>
+
 </body>
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -185,53 +185,47 @@
       color: #333;
     }
     .testimonials {
-  background: #e8f0fe;
-  border-radius: 12px;
-  padding: 40px 30px;
-  box-shadow: 0 6px 20px rgba(30, 136, 229, 0.15);
-  max-width: 900px;
-  margin: 0 auto 60px;
-}
-
-.testimonial-list {
-  display: flex;
-  gap: 25px;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.testimonial {
-  background: white;
-  border-radius: 12px;
-  padding: 25px 20px;
-  flex: 1 1 260px;
-  box-shadow: 0 4px 12px rgba(30, 136, 229, 0.1);
-  font-style: italic;
-  color: #2a2a2a;
-  cursor: default;
-  transition: transform 0.3s ease;
-}
-
-.testimonial:hover,
-.testimonial:focus {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(30, 136, 229, 0.3);
-  outline: none;
-}
-
-.testimonial p {
-  margin-bottom: 15px;
-  font-size: 1.1rem;
-  line-height: 1.4;
-}
-
-.testimonial h4 {
-  text-align: right;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #1e88e5;
-}
-
+      background: #e8f0fe;
+      border-radius: 12px;
+      padding: 40px 30px;
+      box-shadow: 0 6px 20px rgba(30, 136, 229, 0.15);
+      max-width: 900px;
+      margin: 0 auto 60px;
+    }
+    .testimonial-list {
+      display: flex;
+      gap: 25px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .testimonial {
+      background: white;
+      border-radius: 12px;
+      padding: 25px 20px;
+      flex: 1 1 260px;
+      box-shadow: 0 4px 12px rgba(30, 136, 229, 0.1);
+      font-style: italic;
+      color: #2a2a2a;
+      cursor: default;
+      transition: transform 0.3s ease;
+    }
+    .testimonial:hover,
+    .testimonial:focus {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(30, 136, 229, 0.3);
+      outline: none;
+    }
+    .testimonial p {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+    .testimonial h4 {
+      text-align: right;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1e88e5;
+    }
     /* Footer */
     footer .contact-info {
       max-width: 600px;
@@ -293,125 +287,217 @@
         flex: 1 1 100%;
       }
     }
+
+    /* --- Loader Styles --- */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #1e88e5, #42a5f5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      flex-direction: column;
+      gap: 20px;
+      user-select: none;
+    }
+    /* Spinner container */
+    .spinner {
+      width: 90px;
+      height: 90px;
+      position: relative;
+      animation: rotate 1.8s linear infinite;
+    }
+    /* Spinner circle */
+    .spinner svg circle {
+      fill: none;
+      stroke: #ffca28;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 220;
+      stroke-dashoffset: 220;
+      animation: dash 1.5s ease-in-out infinite;
+    }
+    /* Spinner circle shadow for glow effect */
+    .spinner svg circle.shadow {
+      stroke: rgba(255, 202, 40, 0.3);
+      stroke-width: 10;
+      filter: drop-shadow(0 0 8px #ffca28);
+      animation: dashShadow 1.5s ease-in-out infinite;
+    }
+    /* Rotate animation */
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+    /* Dash animation */
+    @keyframes dash {
+      0% {
+        stroke-dashoffset: 220;
+      }
+      50% {
+        stroke-dashoffset: 55;
+        transform: rotate(45deg);
+      }
+      100% {
+        stroke-dashoffset: 220;
+        transform: rotate(360deg);
+      }
+    }
+    /* Dash shadow animation */
+    @keyframes dashShadow {
+      0% {
+        stroke-dashoffset: 220;
+      }
+      50% {
+        stroke-dashoffset: 60;
+        transform: rotate(45deg);
+      }
+      100% {
+        stroke-dashoffset: 220;
+        transform: rotate(360deg);
+      }
+    }
+    /* Logo text animation */
+    #loader .loader-text {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffca28;
+      font-family: 'Poppins', sans-serif;
+      text-shadow: 0 0 12px rgba(255, 202, 40, 0.8);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      0% {
+        text-shadow: 0 0 8px rgba(255, 202, 40, 0.6);
+      }
+      100% {
+        text-shadow: 0 0 18px rgba(255, 202, 40, 1);
+      }
+    }
   </style>
 </head>
 <body>
+
+<!-- Loader -->
+<div id="loader" role="alert" aria-live="assertive" aria-busy="true" aria-label="Loading content, please wait">
+  <div class="spinner" aria-hidden="true" aria-label="Loading animation">
+    <svg viewBox="0 0 100 100" width="90" height="90" >
+      <circle class="shadow" cx="50" cy="50" r="35"/>
+      <circle cx="50" cy="50" r="35"/>
+    </svg>
+  </div>
+  <div class="loader-text"> Welcome To T-deliv</div>
+</div>
 
 <header>
   <div class="logo-container">
     <a href="index.html" class="logo" aria-label="Go to homepage">
       <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-        <rect x="10" y="14" width="44" height="36" rx="4" ry="4" />
-        <path d="M20 18 L44 18 L44 24 L34 24 L34 46 L28 46 L28 24 L20 24 Z" fill="#1e88e5"/>
-        <line x1="48" y1="22" x2="58" y2="22" stroke="#1e88e5" stroke-width="2" stroke-linecap="round"/>
-        <line x1="48" y1="30" x2="58" y2="30" stroke="#1e88e5" stroke-width="2" stroke-linecap="round"/>
+        <rect x="10" y="14" width="44" height="36" rx="8" ry="8" fill="#ffca28" stroke="#1e88e5" stroke-width="3"/>
+        <circle cx="32" cy="32" r="10" fill="none" stroke="#1e88e5" stroke-width="3"/>
+        <path d="M22 34h20" stroke="#1e88e5" stroke-width="3" stroke-linecap="round"/>
       </svg>
-      <span>T-deliv</span>
+      T-deliv
     </a>
   </div>
-  <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  <nav id="primary-navigation" aria-label="Primary Navigation">
-    <a href="index.html" aria-current="page">Home</a>
-    <a href="pickup.html">Schedule Pickup</a>
-    <a href="track.html">Track Package</a>
-    <a href="contact.html">Contact</a>
+  <nav id="nav-menu" aria-label="Primary navigation">
+    <a href="index.html" class="nav-link" aria-current="page">Home</a>
+    <a href="pickup.html" class="nav-link">Schedule Pickup</a>
+    <a href="track.html" class="nav-link">Track Package </a>
+    <a href="contact.html" class="nav-link">Contact</a>
   </nav>
+  <div class="hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0" aria-expanded="false" aria-controls="nav-menu">
+    <span></span><span></span><span></span>
+  </div>
 </header>
 
 <main>
   <section class="hero" aria-label="Welcome section">
-    <h1>Fast. Reliable. Trackable.</h1>
-    <p class="slogan">Your trusted delivery partner, delivering packages with care and speed.</p>
-    <button class="cta" onclick="location.href='pickup.html'">Schedule a Pickup</button>
+    <h1>Welcome to T-deliv</h1>
+    <p class="slogan">Fast, Reliable & Trackable Delivery</p>
+    <button class="cta" onclick="window.location.href='pickup.html'">Schedule a Pickup</button>
   </section>
 
-  <section class="features" aria-label="Features of T-deliv">
+  <section class="features" aria-label="Features">
     <article class="feature" tabindex="0">
       <i class="fas fa-shipping-fast" aria-hidden="true"></i>
       <h3>Fast Delivery</h3>
-      <p>We ensure your packages reach their destination quickly and safely.</p>
+      <p>Get your packages delivered in record time with our efficient service.</p>
     </article>
     <article class="feature" tabindex="0">
-      <i class="fas fa-truck" aria-hidden="true"></i>
+      <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
       <h3>Real-Time Tracking</h3>
-      <p>Track your package status anytime with our easy-to-use tracking system.</p>
+      <p>Stay updated with live tracking on your shipments.</p>
     </article>
     <article class="feature" tabindex="0">
-      <i class="fas fa-headset" aria-hidden="true"></i>
-      <h3>24/7 Support</h3>
-      <p>Our dedicated team is always here to assist you with your delivery needs.</p>
+      <i class="fas fa-lock" aria-hidden="true"></i>
+      <h3>Secure Handling</h3>
+      <p>Your packages are handled with the utmost care and security.</p>
     </article>
-    <article class="feature" tabindex="0">
-      <i class="fas fa-check-circle" aria-hidden="true"></i>
-      <h3>Reliable Service</h3>
-      <p>Count on us for secure and dependable delivery every time.</p>
-    </article>
-    <article class="feature" tabindex="0">
-      <i class="fas fa-globe" aria-hidden="true"></i>
-      <h3>Global Reach</h3>
-      <p>We deliver to locations across the globe, connecting you with the world.</p>
   </section>
-    <!-- Testimonials Section -->
-  <section class="testimonials" aria-label="Customer Testimonials">
-    <h2 style="text-align:center; color:#1e88e5; margin-bottom: 30px; font-weight: 700; font-size: 2rem;">
-      What Our Customers Say
-    </h2>
+
+  <section class="testimonials" aria-label="Testimonials">
     <div class="testimonial-list">
       <article class="testimonial" tabindex="0">
-        <p>"T-deliv made shipping so easy! My package arrived early and the tracking was spot on."</p>
-        <h4>- Ada E.</h4>
+        <p>"T-deliv made shipping so easy and fast! Highly recommended."</p>
+        <h4>– Jane D.</h4>
       </article>
       <article class="testimonial" tabindex="0">
-        <p>"Excellent customer support and reliable delivery. Highly recommend T-deliv for all shipments."</p>
-        <h4>- Chinedu M.</h4>
+        <p>"Excellent customer support and timely updates on my delivery."</p>
+        <h4>– Michael S.</h4>
       </article>
       <article class="testimonial" tabindex="0">
-        <p>"Fast and trustworthy! I love how I can track my package in real-time with T-deliv."</p>
-        <h4>- Fatima S.</h4>
-      </article>
-      <article class="testimonial" tabindex="0">
-        <p>"I had a great experience with T-deliv. They handled my fragile items with care and delivered on time."</p>
-        <h4>- Oluwaseun A.</h4>
-      </article>
-      <article class="testimonial" tabindex="0">
-        <p>"T-deliv is my go-to for all my shipping needs. Their service is top-notch and very reliable."</p>
-        <h4>- Ibrahim K.</h4>
+        <p>"I trust T-deliv for all my shipments. They never disappoint."</p>
+        <h4>– Angela R.</h4>
       </article>
     </div>
   </section>
-
 </main>
 
-<footer>
-  <div class="contact-info" aria-label="Contact information">
-    <div><i class="fas fa-phone-alt" aria-hidden="true"></i> +234-707-959-1433</div>
-    <div><i class="fas fa-envelope" aria-hidden="true"></i> support@t-deliv.com</div>
-    <div><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Block 6B, Korea Bus-Stop Ishefun, Lagos, Nigeria.</div>
-  </div>
+<footer role="contentinfo" aria-label="Site footer">
+  <div class="contact-info">
+      <div><i class="fas fa-phone"></i> +234-707-959-1433</div>
+      <div><i class="fas fa-envelope"></i> support@t-deliv.com</div>
+      <div><i class="fas fa-map-marker-alt"></i> Block 6B, Korea Bus-Stop Ishefun, Lagos, Nigeria.</div>
+    </div>
   <div class="footer-about">
-    &copy; 2025 T-deliv. All rights reserved. <a href="about.html">Learn More</a>
+    &copy; 2025 T-deliv. All rights reserved. Developed by <a href="developer.html" target="_blank" rel="noopener noreferrer">TOMIJAY</a>.
+  </div>
+    <div class="footer-about">
+    &copy; Learn more about us<a href="about.html" target="_blank" rel="noopener noreferrer">About</a>.
   </div>
 </footer>
 
 <script>
-  const hamburger = document.getElementById("hamburger");
-  const nav = document.getElementById("primary-navigation");
+  // Hamburger menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('nav-menu');
 
-  hamburger.addEventListener("click", () => {
-    const expanded = hamburger.getAttribute("aria-expanded") === "true" || false;
-    hamburger.setAttribute("aria-expanded", !expanded);
-    nav.classList.toggle("open");
+  hamburger.addEventListener('click', () => {
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+    hamburger.setAttribute('aria-expanded', !expanded);
+    navMenu.classList.toggle('open');
   });
 
-  // Close menu on link click (mobile)
-  nav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
-      nav.classList.remove("open");
-      hamburger.setAttribute("aria-expanded", false);
-    });
+  hamburger.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      hamburger.click();
+    }
+  });
+
+  // Loader control
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      loader.style.opacity = '0';
+      loader.style.pointerEvents = 'none';
+      setTimeout(() => {
+        loader.remove();
+      }, 500);
+    }, 5000); // 5 seconds loader duration
   });
 </script>
 
 </body>
 </html>
-
